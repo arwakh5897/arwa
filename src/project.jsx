@@ -55,13 +55,13 @@ const Project = () => {
   };
 
   return (
-    <section id="projects" className="py-20 px-6 m-6 bg-gray-900 rounded-lg relative z-10">
+    <section id="projects" className="py-10 scroll-mt-10 px-6 m-6 bg-gray-900 rounded-lg relative z-10">
       <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
         Projects
       </h2>
 
       <div className="grid md:grid-cols-2 gap-6">
-        {projects.map((project, index) => (
+                {projects.map((project, index) => (
           <div
             key={index}
             className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-indigo-500/50 transition-shadow duration-500"
