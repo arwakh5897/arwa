@@ -89,6 +89,20 @@ const Header = () => {
             Projects
           </a>
           <a
+            href="#skills"
+            className="w-full text-center py-4 border-b border-gray-700 hover:text-indigo-400 transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
+            Skills
+          </a>
+          <a
+            href="#languages"
+            className="w-full text-center py-4 border-b border-gray-700 hover:text-indigo-400 transition-colors"
+            onClick={() => setMenuOpen(false)}
+          >
+            Languages
+          </a>
+          <a
             href="#contact"
             className="w-full text-center py-4 border-b border-gray-700 hover:text-indigo-400 transition-colors"
             onClick={() => setMenuOpen(false)}
