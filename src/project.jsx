@@ -55,40 +55,43 @@ const Project = () => {
   };
 
   return (
-    <section id="projects" className="py-10 scroll-mt-10 px-6 m-6 bg-gray-900 rounded-lg relative z-10">
-      <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
+    <section
+      id="projects"
+      className="py-10 scroll-mt-10 px-3 sm:px-6 m-3 sm:m-6 bg-gray-900 rounded-lg relative z-10"
+    >
+      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-10 text-indigo-400">
         Projects
       </h2>
 
-      <div className="grid md:grid-cols-2 gap-6">
-                {projects.map((project, index) => (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        {projects.map((project, index) => (
           <div
             key={index}
-            className="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-indigo-500/50 transition-shadow duration-500"
+            className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md sm:shadow-lg hover:shadow-indigo-500/50 transition-shadow duration-500"
           >
-            <h3 className="text-xl font-semibold mb-2 text-indigo-300">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-indigo-300">
               {project.title}
             </h3>
 
             {/* Slideshow */}
             <div
-              className="relative h-72 w-full mb-4 overflow-hidden rounded-md group"
+              className="relative w-full mb-3 sm:mb-4 overflow-hidden rounded-md group"
               onMouseEnter={() => setPausedIndex(index)}
               onMouseLeave={() => setPausedIndex(null)}
             >
               <img
                 src={project.images[currentIndexes[index]]}
                 alt={project.title}
-                className="h-72 w-full rounded-md"
+                className="w-full h-40 sm:h-48 md:h-64 lg:h-72 object-contain bg-white rounded-md p-2"
               />
 
               {/* dots */}
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 sm:gap-2">
                 {project.images.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => goToDot(index, i)}
-                    className={`w-3 h-3 rounded-full ${
+                    className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${
                       currentIndexes[index] === i
                         ? "bg-indigo-400"
                         : "bg-gray-500"
@@ -99,12 +102,12 @@ const Project = () => {
             </div>
 
             {/* Short description */}
-            <p className="text-gray-300">
-              {project.description.slice(0, 150)}...
+            <p className="text-gray-300 text-sm sm:text-base">
+              {project.description.slice(0, 120)}...
             </p>
             <button
               onClick={() => setActiveProject(project)}
-              className="text-indigo-400 hover:text-indigo-300 mt-2"
+              className="text-indigo-400 hover:text-indigo-300 mt-2 text-sm sm:text-base"
             >
               Read More
             </button>
@@ -116,24 +119,24 @@ const Project = () => {
       {activeProject &&
         createPortal(
           <div
-            className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] px-4"
+            className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] px-2 sm:px-4"
             onClick={() => setActiveProject(null)} // click outside close
           >
             <div
-              className="bg-gray-800 max-w-2xl w-full rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
+              className="bg-gray-800 max-w-lg sm:max-w-2xl w-full rounded-lg p-4 sm:p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
               onClick={(e) => e.stopPropagation()} // prevent close on content click
             >
               <button
                 onClick={() => setActiveProject(null)}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
 
-              <h3 className="text-2xl font-semibold text-indigo-300 mb-4">
+              <h3 className="text-lg sm:text-2xl font-semibold text-indigo-300 mb-3 sm:mb-4">
                 {activeProject.title}
               </h3>
-              <p className="text-gray-300 whitespace-pre-line">
+              <p className="text-gray-300 whitespace-pre-line text-sm sm:text-base leading-relaxed">
                 {activeProject.description}
               </p>
             </div>
