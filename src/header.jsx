@@ -17,14 +17,30 @@ const Header = () => {
   return (
     <nav className="fixed top-0 left-0 w-full bg-gray-900/70 backdrop-blur-md shadow-md p-4 flex justify-between items-center z-50">
       {/* Logo */}
-      <h1 className="text-xl md:text-2xl font-bold text-white tracking-wide">
-        MyPortfolio
-      </h1>
+<h1
+  className="
+    text-3xl md:text-4xl font-bold 
+    tracking-wide 
+    text-white 
+    border-b-4 border-yellow-400 
+    inline-block pb-1
+  "
+>
+MZ
+</h1>
+
+      {/* Logo */}
+        {/* <img 
+          src="/zain2.png" 
+          alt="MyPortfolio Logo" 
+          className="h-5 w-5 bg-transparent "
+        /> */}
+
 
       {/* Desktop Menu */}
       <div className="hidden font-medium md:flex items-center space-x-8 text-white">
         <a href="#about" className="hover:text-indigo-400 transition-colors">
-          About
+          Home
         </a>
         <a href="#projects" className="hover:text-indigo-400 transition-colors">
           Projects
@@ -60,7 +76,7 @@ const Header = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-screen w-4/6 sm:w-2/5 bg-gray-900 shadow-xl ease-in-out duration-300 z-50 ${
+        className={`fixed top-0 right-0 h-screen w-4/8 sm:w-2/5 bg-gray-900 shadow-xl ease-in-out duration-300 z-50 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -73,13 +89,13 @@ const Header = () => {
         </button>
 
         {/* Sidebar Links */}
-        <div className="flex flex-col items-center mt-20 text-lg font-semibold text-white w-full">
+        <div className="flex flex-col items-center mt-10 text-lg font-semibold text-white w-full">
           <a
             href="#about"
             className="w-full text-center py-4 border-b border-gray-700 hover:text-indigo-400 transition-colors"
             onClick={() => setMenuOpen(false)}
           >
-            About
+            Home
           </a>
           <a
             href="#projects"

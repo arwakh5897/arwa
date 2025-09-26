@@ -8,10 +8,7 @@ import * as THREE from "three";
 import Footer from "./footer";
 import Header from "./header";
 import Skills from "./skills";
-import Experience from "./experience";
 import Languages  from "./languages";
-import Certifications from "./certification";
-import Contactus from "./contactus";
 
 const App = () => {
 

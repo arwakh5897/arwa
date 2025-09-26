@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { createPortal } from "react-dom"; // 👈 Portal import
+import { createPortal } from "react-dom";
 
 const projects = [
   {
-    title: "J Dent",
+    title: "J Dent Lite",
     images: ["/assets/jdent1.png", "/assets/jdent2.png", "/assets/jdent3.png"],
     description: `J Dent Lite is a dental clinic management web application where I contributed to the frontend development using React and Tailwind CSS.
 
-    My work included:
-    - Designing and implementing a modern UI with responsive layouts
-    - Appointment booking forms
-    - Patient record management
-    - Dashboards with charts
-    - Dark mode
-    - Accessibility improvements`,
+My work included:
+- Designing and implementing a modern UI with responsive layouts
+- Appointment booking forms
+- Patient record management
+- Dashboards with charts
+- Dark mode
+- Accessibility improvements`,
   },
   {
     title: "Building Management System",
     images: ["/assets/building1.png", "/assets/building2.png", "/assets/building3.png"],
     description: `The Building Management System is a property and tenant management web application developed with React and Bootstrap 5.
 
-    My work included:
-    - Responsive UI with Bootstrap 5 and SCSS
-    - Role-based access
-    - Complaints, notices, rent payments, documents
-    - Dashboards with charts and tables
-    - Mobile compatibility
-    - Accessibility standards`,
+My work included:
+- Responsive UI with Bootstrap 5 and SCSS
+- Role-based access
+- Complaints, notices, rent payments, documents
+- Dashboards with charts and tables
+- Mobile compatibility
+- Accessibility standards`,
   },
 ];
 
@@ -36,23 +36,17 @@ const Project = () => {
   const [pausedIndex, setPausedIndex] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
 
-  // Auto slideshow
+  // Auto flip top image every 3 seconds
   useEffect(() => {
-    const id = setInterval(() => {
+    const interval = setInterval(() => {
       setCurrentIndexes((prev) =>
         prev.map((val, i) =>
           i === pausedIndex ? val : (val + 1) % projects[i].images.length
         )
       );
     }, 3000);
-    return () => clearInterval(id);
+    return () => clearInterval(interval);
   }, [pausedIndex]);
-
-  const goToDot = (projectIndex, imageIndex) => {
-    setCurrentIndexes((prev) =>
-      prev.map((v, i) => (i === projectIndex ? imageIndex : v))
-    );
-  };
 
   return (
     <section
@@ -63,7 +57,7 @@ const Project = () => {
         Projects
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project, index) => (
           <div
             key={index}
@@ -73,32 +67,31 @@ const Project = () => {
               {project.title}
             </h3>
 
-            {/* Slideshow */}
+            {/* Gallery Flip */}
             <div
-              className="relative w-full mb-3 sm:mb-4 overflow-hidden rounded-md group"
+              className="relative w-full h-64 mb-3 sm:mb-4 overflow-hidden rounded-md group"
               onMouseEnter={() => setPausedIndex(index)}
               onMouseLeave={() => setPausedIndex(null)}
             >
-              <img
-                src={project.images[currentIndexes[index]]}
-                alt={project.title}
-                className="w-full h-40 sm:h-48 md:h-64 lg:h-72 object-contain bg-white rounded-md p-2"
-              />
-
-              {/* dots */}
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 sm:gap-2">
-                {project.images.map((_, i) => (
-                  <button
+              {project.images.map((img, i) => {
+                // calculate visible order
+                const imgIndex =
+                  (i - currentIndexes[index] + project.images.length) %
+                  project.images.length;
+                return (
+                  <img
                     key={i}
-                    onClick={() => goToDot(index, i)}
-                    className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full ${
-                      currentIndexes[index] === i
-                        ? "bg-indigo-400"
-                        : "bg-gray-500"
-                    }`}
+                    src={img}
+                    alt={`${project.title}-${i}`}
+                    className="absolute w-full h-64 object-contain rounded-md shadow-lg transition-all duration-700"
+                    style={{
+                      top: `${imgIndex * 15}px`, // stack offset
+                      zIndex: project.images.length - imgIndex,
+                      transform: `scale(${imgIndex === 0 ? 1 : 0.9})`,
+                    }}
                   />
-                ))}
-              </div>
+                );
+              })}
             </div>
 
             {/* Short description */}
