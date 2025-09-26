@@ -16,28 +16,28 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="py-10 scroll-mt-10 m-3 bg-gray-900/80 rounded-lg relative"
+      className="py-10 scroll-mt-10 bg-gray-900/80 rounded-lg relative"
     >
       <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
         Contact Me
       </h2>
 
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-4">
+      <form onSubmit={handleSubmit}  className="max-w-lg w-full px-3 sm:px-0 mx-auto space-y-4">
         <input
           type="text"
           placeholder="Your Name"
-          // required
+          required
           className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
         />
         <input
           type="email"
           placeholder="Your Email"
-          // required
+          required
           className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
         />
         <textarea
           placeholder="Your Message"
-          // required
+          required
           className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
           rows={4}
         />
