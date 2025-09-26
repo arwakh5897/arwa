@@ -15,7 +15,7 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-900/70 backdrop-blur-md shadow-md p-2 flex justify-between items-center z-50">
+    <nav className="fixed top-0 left-0 w-full bg-gray-900 backdrop-blur-md shadow-md p-2 flex justify-between items-center z-50">
       {/* Logo */}
         <h1
           className="
@@ -53,7 +53,7 @@ const Header = () => {
         <a href="#languages" className="hover:text-indigo-400 transition-colors">
           Languages
         </a>
-        <a href="#contact" className="hover:text-indigo-400 transition-colors">
+        <a href="#contact" className="hover:text-indigo-400 transition-colors mr-3">
           Contact
         </a>
       </div>
@@ -91,7 +91,7 @@ const Header = () => {
         </button>
 
         {/* Sidebar Links */}
-        <div className="flex flex-col items-center mt-10 text-lg font-semibold text-white w-full">
+        <div className="flex flex-col items-center mt-10 text-sm font-semibold text-white w-full">
           <a
             href="#about"
             className="w-full text-center py-4 border-b border-gray-700 hover:text-indigo-400 transition-colors"
