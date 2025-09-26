@@ -36,7 +36,7 @@ const Hero = () => {
   return (
     <section
       id="about"
-      className="h-screen w-full flex flex-col items-center justify-center text-center relative bg-trasparent"
+      className="h-screen w-full flex flex-col items-center justify-center text-center relative bg-transparent"
     >
       <div className="relative z-10 px-6">
         <h1 className="text-5xl font-bold text-white">
@@ -54,12 +54,22 @@ const Hero = () => {
           </span>
         </p>
 
-        <div className="flex flex-col items-center">
+        {/* 🎯 Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
           <a
             href="#projects"
-            className="mt-6 px-6 py-3 bg-indigo-800 rounded-lg shadow-lg hover:bg-indigo-700 text-white"
+            className="px-6 py-3 bg-indigo-800 rounded-lg shadow-lg hover:bg-indigo-700 text-white"
           >
             View My Work
+          </a>
+
+          {/* 📄 Download CV Button */}
+          <a
+            href="/Muhammad_Zain_Ul_Abden_CV.pdf"
+            download
+            className="px-6 py-3 bg-gray-100 text-indigo-700 font-medium rounded-lg shadow hover:bg-gray-200"
+          >
+            Download CV
           </a>
         </div>
       </div>
