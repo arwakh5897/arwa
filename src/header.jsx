@@ -15,19 +15,21 @@ const Header = () => {
   }, [menuOpen]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-900/70 backdrop-blur-md shadow-md p-4 flex justify-between items-center z-50">
+    <nav className="fixed top-0 left-0 w-full bg-gray-900/70 backdrop-blur-md shadow-md p-2 flex justify-between items-center z-50">
       {/* Logo */}
-<h1
-  className="
-    text-3xl md:text-4xl font-bold 
-    tracking-wide 
-    text-white 
-    border-b-4 border-yellow-400 
-    inline-block pb-1
-  "
->
-MZ
-</h1>
+        <h1
+          className="
+            ml-3
+            mb-1
+            text-2xl md:text-2xl font-bold 
+            tracking-wide 
+            text-white 
+            border-b-4 border-yellow-400 
+            inline-block pb-1
+          "
+        >
+        MZ
+        </h1>
 
       {/* Logo */}
         {/* <img 
