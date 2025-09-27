@@ -2,135 +2,117 @@ import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { createPortal } from "react-dom";
 
-const projects = [
-  {
-    title: "J Dent Lite",
-    images: ["/assets/jdent1.png", "/assets/jdent2.png", "/assets/jdent3.png"],
-    description: `J Dent Lite is a dental clinic management web application where I contributed to the frontend development using React and Tailwind CSS.
-
-My work included:
-- Designing and implementing a modern UI with responsive layouts
-- Appointment booking forms
-- Patient record management
-- Dashboards with charts
-- Dark mode
-- Accessibility improvements`,
-  },
-  {
-    title: "Building Management System",
-    images: ["/assets/building1.png", "/assets/building2.png", "/assets/building3.png"],
-    description: `The Building Management System is a property and tenant management web application developed with React and Bootstrap 5.
-
-My work included:
-- Responsive UI with Bootstrap 5 and SCSS
-- Role-based access
-- Complaints, notices, rent payments, documents
-- Dashboards with charts and tables
-- Mobile compatibility
-- Accessibility standards`,
-  },
-];
+const projectdetails = {
+  title: "Bank of AJK Intern",
+  location: "Muzaffarabad, Pakistan",
+  images: [
+    "https://images.pexels.com/photos/4386366/pexels-photo-4386366.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/669615/pexels-photo-669615.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/3184290/pexels-photo-3184290.jpeg?auto=compress&cs=tinysrgb&w=800",
+    "https://images.pexels.com/photos/4386394/pexels-photo-4386394.jpeg?auto=compress&cs=tinysrgb&w=800",
+  ],
+  description: `• Customer Service: Assisted customers with basic banking services, including opening and closing accounts, processing transactions, and answering general inquiries, contributing to a positive customer experience.
+• Data Analysis: Collected and analyzed customer data to identify trends in account usage, helping the bank improve service offerings and target key customer segments.
+• Loan Documentation: Assisted in the preparation and processing of loan documentation, ensuring accuracy and compliance with regulatory requirements.`,
+};
 
 const Project = () => {
-  const [currentIndexes, setCurrentIndexes] = useState(projects.map(() => 0));
-  const [pausedIndex, setPausedIndex] = useState(null);
-  const [activeProject, setActiveProject] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  // Auto flip top image every 3 seconds
   useEffect(() => {
+    if (paused) return;
     const interval = setInterval(() => {
-      setCurrentIndexes((prev) =>
-        prev.map((val, i) =>
-          i === pausedIndex ? val : (val + 1) % projects[i].images.length
-        )
+      setCurrentIndex(
+        (prev) => (prev + 1) % projectdetails.images.length
       );
     }, 3000);
     return () => clearInterval(interval);
-  }, [pausedIndex]);
+  }, [paused]);
 
   return (
-    <section
-      id="projects"
-      className="py-10 scroll-mt-10 px-3 sm:px-6 m-3 sm:m-6 bg-gray-900 rounded-lg relative z-10"
-    >
-      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-10 text-indigo-400">
-        Projects
+    <section 
+    id="projects"
+    className="py-10 px-4 sm:px-6 lg:px-12 m-3 bg-gray-900 rounded-lg scroll-mt-10">
+      <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 text-indigo-400">
+        PROFESSIONAL EXPERIENCE
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projects.map((project, index) => (
-          <div
-            key={index}
-            className="bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md sm:shadow-lg hover:shadow-indigo-500/50 transition-shadow duration-500"
-          >
-            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-indigo-300">
-              {project.title}
-            </h3>
+      <div className="w-full max-w-full mx-auto bg-gray-800 p-8 sm:p-12 rounded-2xl shadow-xl hover:shadow-indigo-500/50 transition-shadow duration-500">
+        <h3 className="text-2xl sm:text-3xl font-semibold mb-2 text-indigo-300">
+          {projectdetails.title}
+        </h3>
+        <p className="text-gray-400 text-sm sm:text-base mb-6">
+          {projectdetails.location}
+        </p>
 
-            {/* Gallery Flip */}
-            <div
-              className="relative w-full h-64 mb-3 sm:mb-4 overflow-hidden rounded-md group"
-              onMouseEnter={() => setPausedIndex(index)}
-              onMouseLeave={() => setPausedIndex(null)}
-            >
-              {project.images.map((img, i) => {
-                // calculate visible order
-                const imgIndex =
-                  (i - currentIndexes[index] + project.images.length) %
-                  project.images.length;
-                return (
-                  <img
-                    key={i}
-                    src={img}
-                    alt={`${project.title}-${i}`}
-                    className="absolute w-full h-64 object-contain rounded-md shadow-lg transition-all duration-700"
-                    style={{
-                      top: `${imgIndex * 15}px`, // stack offset
-                      zIndex: project.images.length - imgIndex,
-                      transform: `scale(${imgIndex === 0 ? 1 : 0.9})`,
-                    }}
-                  />
-                );
-              })}
-            </div>
+        {/* Image Carousel */}
+        <div
+          className="relative w-full h-80 mb-6 overflow-hidden rounded-xl cursor-pointer group"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onClick={() => setModalOpen(true)}
+        >
+          {projectdetails.images.map((img, i) => {
+            const index =
+              (i - currentIndex + projectdetails.images.length) %
+              projectdetails.images.length;
+            return (
+              <img
+                key={i}
+                src={img}
+                alt={`Project-${i}`}
+                className="absolute w-full h-80 object-cover rounded-xl shadow-lg transition-all duration-700"
+                style={{
+                  top: `${index * 10}px`,
+                  zIndex: projectdetails.images.length - index,
+                  transform: `scale(${index === 0 ? 1 : 0.92})`,
+                  opacity: index === 0 ? 1 : 0.7,
+                }}
+              />
+            );
+          })}
+        </div>
 
-            {/* Short description */}
-            <p className="text-gray-300 text-sm sm:text-base">
-              {project.description.slice(0, 120)}...
-            </p>
-            <button
-              onClick={() => setActiveProject(project)}
-              className="text-indigo-400 hover:text-indigo-300 mt-2 text-sm sm:text-base"
-            >
-              Read More
-            </button>
-          </div>
-        ))}
+        <p className="text-gray-300 text-sm sm:text-base line-clamp-6">
+          {projectdetails.description}
+        </p>
+        <button
+          onClick={() => setModalOpen(true)}
+          className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm sm:text-base font-medium"
+        >
+          Read More
+        </button>
       </div>
 
-      {/* Modal using Portal */}
-      {activeProject &&
+      {/* Modal */}
+      {modalOpen &&
         createPortal(
           <div
-            className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] px-2 sm:px-4"
-            onClick={() => setActiveProject(null)} // click outside close
+            className="fixed inset-0 bg-black/60 flex items-center justify-center z-[9999] px-4"
+            onClick={() => setModalOpen(false)}
           >
             <div
-              className="bg-gray-800 max-w-lg sm:max-w-2xl w-full rounded-lg p-4 sm:p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
-              onClick={(e) => e.stopPropagation()} // prevent close on content click
+              className="bg-gray-800 max-w-2xl w-full rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
+              onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={() => setActiveProject(null)}
+                onClick={() => setModalOpen(false)}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
               >
-                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                <X className="w-6 h-6" />
               </button>
 
-              <h3 className="text-lg sm:text-2xl font-semibold text-indigo-300 mb-3 sm:mb-4">
-                {activeProject.title}
+              <h3 className="text-2xl font-semibold text-indigo-300 mb-4">
+                {projectdetails.title}
               </h3>
+              <p className="text-gray-400 text-sm sm:text-base mb-4">
+                {projectdetails.location}
+              </p>
+
               <p className="text-gray-300 whitespace-pre-line text-sm sm:text-base leading-relaxed">
-                {activeProject.description}
+                {projectdetails.description}
               </p>
             </div>
           </div>,

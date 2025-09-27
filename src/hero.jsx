@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 const Hero = () => {
   // ✨ Rotating job titles
   const titles = [
-    "React Js", "React Native", "Php", "Laravel", "Yii2",
-    "JavaScript", "Tailwind", "Bootstrap"
+    "Banking Fundamentals", "Analytical Skills", "Software Proficiency", "Communication Skills", "Quantitative Tools",
+    "Research",
   ];
   const [titleIndex, setTitleIndex] = useState(0);
 
@@ -42,17 +42,21 @@ const Hero = () => {
         <h1 className="text-5xl font-bold text-white">
           Hi, I’m{" "}
           <span className={`${colors[colorIndex]} transition-all duration-700`}>
-            Zain
+            Arwa
           </span>
         </h1>
 
         {/* 🔄 Rotating text */}
-        <p className="mt-4 text-lg text-gray-200 font-bold">
-          Full Stack Developer skilled in{" "}
-          <span className={`${colors[colorIndex]} transition-all duration-700`}>
-            {titles[titleIndex]}
-          </span>
-        </p>
+     <p className="mt-4 text-xl sm:text-2xl text-gray-300 font-medium">
+  Specializing in{" "}
+  <span
+    className={`${colors[colorIndex]} font-semibold transition-colors duration-700 inline-block whitespace-nowrap`}
+  >
+    {titles[titleIndex]}
+  </span>
+</p>
+
+
 
         {/* 🎯 Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-6">
@@ -65,7 +69,7 @@ const Hero = () => {
 
           {/* 📄 Download CV Button */}
           <a
-            href="/Muhammad_Zain_Ul_Abden_CV.pdf"
+            href="/Arwa_CV.pdf"
             download
             className="px-6 py-3 bg-gray-100 text-indigo-700 font-medium rounded-lg shadow hover:bg-gray-200"
           >

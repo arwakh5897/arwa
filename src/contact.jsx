@@ -19,7 +19,7 @@ const Contact = () => {
       className="py-10 scroll-mt-10 bg-gray-900/80 rounded-lg relative"
     >
       <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
-        Contact Me
+        CONTACT ME
       </h2>
 
       <form onSubmit={handleSubmit} className="max-w-lg w-full px-3 sm:px-0 mx-auto space-y-4">
