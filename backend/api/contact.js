@@ -1,27 +1,39 @@
 import { MongoClient } from "mongodb";
 
+// Initialize MongoDB client outside the handler to reuse connection
+let client;
+let clientPromise;
+
 const uri = "mongodb+srv://za735232_db_user:Zain6970@contact-cluster.uovpomi.mongodb.net/?retryWrites=true&w=majority&appName=contact-cluster";
-const client = new MongoClient(uri);
+
+if (!client) {
+  client = new MongoClient(uri);
+  clientPromise = client.connect();
+}
 
 export default async function handler(req, res) {
-  // ✅ Always set CORS headers
-  res.setHeader("Access-Control-Allow-Origin",  "https://portfolio-eosin-one-91.vercel.app"); // 👈 or your frontend domain
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "https://portfolio-eosin-one-91.vercel.app");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // ✅ Handle OPTIONS (CORS preflight)
+  // Handle OPTIONS preflight request
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   try {
-    await client.connect();
+    // Reuse the MongoDB connection
+    const client = await clientPromise;
     const db = client.db("portfolio");
     const collection = db.collection("contacts");
 
     if (req.method === "POST") {
       const { name, email, message } = req.body;
-      const result = await collection.insertOne({ name, email, message });
+      if (!name || !email || !message) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
+      const result = await collection.insertOne({ name, email, message, createdAt: new Date() });
       return res.status(201).json({ success: true, id: result.insertedId });
     }
 
