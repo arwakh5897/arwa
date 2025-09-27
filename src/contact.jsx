@@ -4,7 +4,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
 
-  const API_URL = "https://portfolio-backend.vercel.app/api/contacts";
+  const API_URL = "https://portfolio.vercel.app/api/contacts";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
