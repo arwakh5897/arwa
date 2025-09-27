@@ -76,12 +76,12 @@ const Contact = () => {
             className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
             rows={4}
           />
-          <button
-            type="submit"
-            className="font-bold w-full sm:w-auto px-6 sm:px-8 py-3 bg-indigo-600 rounded-lg hover:bg-indigo-700 text-white shadow-md cursor-pointer transition-colors duration-300"
-          >
-            Send Message
-          </button>
+        <button
+          type="submit"
+          className="font-semibold w-full p-3 bg-indigo-600 rounded-lg hover:bg-indigo-700 text-white shadow-md cursor-pointer transition-colors duration-300"
+        >
+          Send Message
+        </button>
         </form>
 
     </section>
