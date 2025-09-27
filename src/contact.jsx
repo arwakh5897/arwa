@@ -1,49 +1,16 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
+import { CheckCircle } from "lucide-react";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [status, setStatus] = useState("");
+  const [showToast, setShowToast] = useState(false);
 
-  // 🔑 Apna backend URL (live Vercel)
-  const API_URL = "https://portfolio-backend.vercel.app/api/contacts";
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus("⏳ Sending...");
+    setShowToast(true);
 
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData), // ✅ always send JSON
-      });
-
-      if (!res.ok) {
-        throw new Error(`❌ Server error: ${res.status}`);
-      }
-
-      const data = await res.json();
-      console.log("✅ Success:", data);
-
-      setStatus("✅ Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" }); // reset form
-    } catch (error) {
-      console.error("❌ Error:", error);
-      setStatus("❌ Failed to send message. Please try again.");
-    }
+    setTimeout(() => setShowToast(false), 3000);
+    e.target.reset();
   };
 
   return (
@@ -54,36 +21,46 @@ const Contact = () => {
       <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
         Contact Me
       </h2>
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-lg w-full px-3 sm:px-0 mx-auto space-y-4"
-        >
-          <input
-            type="text"
-            placeholder="Your Name"
-            required
-            className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            required
-            className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
-          />
-          <textarea
-            placeholder="Your Message"
-            required
-            className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
-            rows={4}
-          />
+
+      <form onSubmit={handleSubmit} className="max-w-lg w-full px-3 sm:px-0 mx-auto space-y-4">
+        <input
+          type="text"
+          placeholder="Your Name"
+          required
+          className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+        />
+        <input
+          type="email"
+          placeholder="Your Email"
+          required
+          className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+        />
+        <textarea
+          placeholder="Your Message"
+          required
+          className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+          rows={4}
+        />
         <button
           type="submit"
           className="font-semibold w-full p-3 bg-indigo-600 rounded-lg hover:bg-indigo-700 text-white shadow-md cursor-pointer transition-colors duration-300"
         >
           Send Message
         </button>
-        </form>
+      </form>
 
+      {/* Golden Toast using Portal */}
+      {showToast &&
+        createPortal(
+          <div
+            className="fixed top-5 right-5 z-[9999] flex items-center bg-indigo-300 text-gray-900 px-5 py-3 rounded-lg shadow-xl border border-yellow-400
+                        transform transition-all duration-500 ease-in-out animate-slide-in pointer-events-none"
+          >
+            <CheckCircle className="w-5 h-5 mr-2" />
+            <span>Message sent successfully!</span>
+          </div>,
+          document.body
+        )}
     </section>
   );
 };
