@@ -1,7 +1,6 @@
-// api/contacts.js
 import { MongoClient } from "mongodb";
 
-// Reuse connection for serverless environment
+// MongoDB client reuse for serverless
 let client;
 let clientPromise;
 
@@ -16,23 +15,21 @@ if (!client) {
 
 export default async function handler(req, res) {
   // CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "https://portfolio-eosin-one-91.vercel.app"); // your frontend
+  res.setHeader("Access-Control-Allow-Origin", "*"); // ya apne frontend URL
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") return res.status(200).end(); // preflight
+  if (req.method === "OPTIONS") return res.status(200).end();
 
   try {
     const client = await clientPromise;
-    const db = client.db("portfolio");
+    const db = client.db("portfolioDB"); // aapka database
     const collection = db.collection("contacts");
 
     if (req.method === "POST") {
       const { name, email, message } = req.body;
-
-      if (!name || !email || !message) {
-        return res.status(400).json({ error: "Missing required fields" });
-      }
+      if (!name || !email || !message)
+        return res.status(400).json({ error: "Missing fields" });
 
       const result = await collection.insertOne({
         name,
@@ -40,7 +37,6 @@ export default async function handler(req, res) {
         message,
         createdAt: new Date(),
       });
-
       return res.status(201).json({ success: true, id: result.insertedId });
     }
 
@@ -50,8 +46,8 @@ export default async function handler(req, res) {
     }
 
     return res.status(405).json({ error: "Method not allowed" });
-  } catch (error) {
-    console.error("❌ Error:", error);
+  } catch (err) {
+    console.error("❌ Error:", err);
     return res.status(500).json({ error: "Server error" });
   }
 }
