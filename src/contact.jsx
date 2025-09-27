@@ -4,7 +4,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
 
-  const API_URL = "https://portfolio-eosin-one-91.vercel.app/api/contacts"; // live URL
+  const API_URL = "https:/portfolio-eosin-one-91.vercel.app/backend/api/contacts"; // live URL
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -35,7 +35,7 @@ const Contact = () => {
   };
 
   return (
-    <section className="py-10 bg-gray-900 rounded-lg mx-3">
+    <section className="py-10 bg-gray-900 rounded-lg">
       <h2 className="text-3xl font-bold text-center mb-6 text-indigo-400">Contact Me</h2>
 
       <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-4 bg-gray-800 p-6 rounded-lg">
