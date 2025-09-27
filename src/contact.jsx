@@ -47,54 +47,43 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-10 bg-gray-900 rounded-lg mx-3">
-      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-400">
+    <section
+      id="contact"
+      className="py-10 scroll-mt-10 bg-gray-900/80 rounded-lg relative"
+    >
+      <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
         Contact Me
       </h2>
-
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-lg mx-auto space-y-4 bg-gray-800 p-6 rounded-lg"
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
-        />
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          rows="4"
-          value={formData.message}
-          onChange={handleChange}
-          required
-          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
-        ></textarea>
-
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold"
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-lg w-full px-3 sm:px-0 mx-auto space-y-4"
         >
-          Send Message
-        </button>
+          <input
+            type="text"
+            placeholder="Your Name"
+            required
+            className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+          />
+          <input
+            type="email"
+            placeholder="Your Email"
+            required
+            className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+          />
+          <textarea
+            placeholder="Your Message"
+            required
+            className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+            rows={4}
+          />
+          <button
+            type="submit"
+            className="font-bold w-full sm:w-auto px-6 sm:px-8 py-3 bg-indigo-600 rounded-lg hover:bg-indigo-700 text-white shadow-md cursor-pointer transition-colors duration-300"
+          >
+            Send Message
+          </button>
+        </form>
 
-        {status && (
-          <p className="text-center text-sm text-gray-300 mt-3">{status}</p>
-        )}
-      </form>
     </section>
   );
 };
