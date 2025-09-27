@@ -1,69 +1,82 @@
-import { MongoClient } from "mongodb";
+import React, { useState } from "react";
 
-// Initialize MongoDB client
-let client;
-let clientPromise;
+const Contact = () => {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState("");
 
-const uri = process.env.MONGODB_URI;
+  const API_URL = "https://portfolio-backend.vercel.app/api/contacts";
 
-if (!uri) {
-  console.error("❌ MONGODB_URI is not set");
-  throw new Error("MONGODB_URI environment variable is not set");
-}
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-if (!client) {
-  console.log("🔌 Initializing MongoDB client");
-  client = new MongoClient(uri);
-  clientPromise = client.connect().then(() => {
-    console.log("✅ MongoDB client connected");
-    return client;
-  }).catch(err => {
-    console.error("❌ MongoDB connection failed:", err);
-    throw err;
-  });
-}
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("⏳ Sending...");
 
-export default async function handler(req, res) {
-  // Set CORS headers before any processing
-  res.setHeader("Access-Control-Allow-Origin", "https://portfolio-eosin-one-91.vercel.app");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-  if (req.method === "OPTIONS") {
-    console.log("🔄 Handling OPTIONS request");
-    return res.status(200).end();
-  }
+      if (!res.ok) throw new Error(`Server error: ${res.status}`);
 
-  try {
-    console.log("🔍 Connecting to MongoDB...");
-    const client = await clientPromise;
-    const db = client.db("portfolio");
-    const collection = db.collection("contacts");
-    console.log("✅ Connected to portfolio.contacts");
+      const data = await res.json();
+      console.log("✅ Success:", data);
 
-    if (req.method === "POST") {
-      const { name, email, message } = req.body;
-      if (!name || !email || !message) {
-        console.warn("⚠️ Missing required fields:", { name, email, message });
-        return res.status(400).json({ error: "Missing required fields" });
-      }
-      console.log("📝 Inserting contact:", { name, email, message });
-      const result = await collection.insertOne({ name, email, message, createdAt: new Date() });
-      console.log("✅ Inserted contact with ID:", result.insertedId);
-      return res.status(201).json({ success: true, id: result.insertedId });
+      setStatus("✅ Message sent successfully!");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error("❌ Error:", error);
+      setStatus("❌ Failed to send message. Please try again.");
     }
+  };
 
-    if (req.method === "GET") {
-      console.log("📚 Fetching all contacts");
-      const contacts = await collection.find().toArray();
-      console.log("✅ Fetched contacts:", contacts.length);
-      return res.status(200).json(contacts);
-    }
+  return (
+    <section id="contact" className="py-10 bg-gray-900 rounded-lg mx-3">
+      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-400">Contact Me</h2>
 
-    console.warn("⚠️ Method not allowed:", req.method);
-    return res.status(405).json({ error: "Method not allowed" });
-  } catch (error) {
-    console.error("❌ Server error:", error);
-    return res.status(500).json({ error: "Server error" });
-  }
-}
+      <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-4 bg-gray-800 p-6 rounded-lg">
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        />
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          rows="4"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        />
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold"
+        >
+          Send Message
+        </button>
+
+        {status && <p className="text-center text-sm text-gray-300 mt-3">{status}</p>}
+      </form>
+    </section>
+  );
+};
+
+export default Contact;
