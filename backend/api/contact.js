@@ -4,12 +4,12 @@ const uri = process.env.MONGODB_URI;
 const client = new MongoClient(uri);
 
 export default async function handler(req, res) {
-  // ✅ Always return CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // ✅ Always set CORS headers
+  res.setHeader("Access-Control-Allow-Origin",  "https://portfolio-eosin-one-91.vercel.app"); // 👈 or your frontend domain
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // ✅ Handle OPTIONS preflight
+  // ✅ Handle OPTIONS (CORS preflight)
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
@@ -20,15 +20,8 @@ export default async function handler(req, res) {
     const collection = db.collection("contacts");
 
     if (req.method === "POST") {
-      // 🛠 Fix: body may be string on Vercel
-      let body = req.body;
-      if (typeof body === "string") {
-        body = JSON.parse(body);
-      }
-
-      const { name, email, message } = body;
+      const { name, email, message } = req.body;
       const result = await collection.insertOne({ name, email, message });
-
       return res.status(201).json({ success: true, id: result.insertedId });
     }
 
