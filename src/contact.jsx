@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [status, setStatus] = useState("");
 
-  const API_URL = "https:/portfolio-eosin-one-91.vercel.app/backend/api/contacts"; // live URL
+  // 🔑 Apna backend URL (live Vercel)
+  const API_URL = "https://portfolio-backend.vercel.app/api/contacts";
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -17,35 +25,75 @@ const Contact = () => {
     try {
       const res = await fetch(API_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // ✅ always send JSON
       });
 
-      if (!res.ok) throw new Error(`❌ Server error: ${res.status}`);
+      if (!res.ok) {
+        throw new Error(`❌ Server error: ${res.status}`);
+      }
 
       const data = await res.json();
       console.log("✅ Success:", data);
 
       setStatus("✅ Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
-    } catch (err) {
-      console.error("❌ Error:", err);
-      setStatus("❌ Failed to send message.");
+      setFormData({ name: "", email: "", message: "" }); // reset form
+    } catch (error) {
+      console.error("❌ Error:", error);
+      setStatus("❌ Failed to send message. Please try again.");
     }
   };
 
   return (
-    <section className="py-10 bg-gray-900 rounded-lg">
-      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-400">Contact Me</h2>
+    <section id="contact" className="py-10 bg-gray-900 rounded-lg mx-3">
+      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-400">
+        Contact Me
+      </h2>
 
-      <form onSubmit={handleSubmit} className="max-w-lg mx-auto space-y-4 bg-gray-800 p-6 rounded-lg">
-        <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none" />
-        <input type="email" name="email" placeholder="Your Email" value={formData.email} onChange={handleChange} required className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none" />
-        <textarea name="message" placeholder="Your Message" rows="4" value={formData.message} onChange={handleChange} required className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"></textarea>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-lg mx-auto space-y-4 bg-gray-800 p-6 rounded-lg"
+      >
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        />
+        <textarea
+          name="message"
+          placeholder="Your Message"
+          rows="4"
+          value={formData.message}
+          onChange={handleChange}
+          required
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        ></textarea>
 
-        <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold">Send Message</button>
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold"
+        >
+          Send Message
+        </button>
 
-        {status && <p className="text-center text-sm text-gray-300 mt-3">{status}</p>}
+        {status && (
+          <p className="text-center text-sm text-gray-300 mt-3">{status}</p>
+        )}
       </form>
     </section>
   );
