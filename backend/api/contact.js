@@ -4,7 +4,11 @@ import { MongoClient } from "mongodb";
 let client;
 let clientPromise;
 
-const uri = "mongodb+srv://za735232_db_user:Zain6970@contact-cluster.uovpomi.mongodb.net/?retryWrites=true&w=majority&appName=contact-cluster";
+const uri = process.env.MONGODB_URI;
+
+if (!uri) {
+  throw new Error("MONGODB_URI environment variable is not set");
+}
 
 if (!client) {
   client = new MongoClient(uri);
@@ -13,17 +17,16 @@ if (!client) {
 
 export default async function handler(req, res) {
   // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin","https://portfolio-eosin-one-91.vercel.app");
-  res.setHeader("Access-Control-Allow-Methods","GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers","Content-Type");
+  res.setHeader("Access-Control-Allow-Origin", "https://portfolio-eosin-one-91.vercel.app");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Handle OPTIONS preflight request
+  // Handle OPTIONS preflight
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
   try {
-    // Reuse the MongoDB connection
     const client = await clientPromise;
     const db = client.db("portfolio");
     const collection = db.collection("contacts");
@@ -46,5 +49,8 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("❌ Error:", error);
     return res.status(500).json({ error: "Server error" });
+  } finally {
+    // Avoid closing the client in serverless to reuse connection
+    // await client.close(); // Uncomment if running in non-serverless environment
   }
 }
