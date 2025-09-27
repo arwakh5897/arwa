@@ -1,52 +1,63 @@
-// backend/server.js
 import express from "express";
 import cors from "cors";
 import { MongoClient } from "mongodb";
 
 const app = express();
-const PORT = 5000;
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Atlas Connection String (apna URI paste karo)
+// 🔑 Replace with your MongoDB Atlas connection string
 const uri = "mongodb+srv://za735232_db_user:Zain6970@contact-cluster.uovpomi.mongodb.net/?retryWrites=true&w=majority&appName=contact-cluster";
 const client = new MongoClient(uri);
 
-let contacts;
+let db, contactsCollection;
 
-// Connect to MongoDB
+// 🚀 Connect to MongoDB
 async function connectDB() {
   try {
     await client.connect();
+    db = client.db("portfolioDB"); // your database
+    contactsCollection = db.collection("contacts"); // your collection
     console.log("✅ MongoDB Connected");
-    const database = client.db("portfolioDB");
-    contacts = database.collection("contacts");
   } catch (err) {
-    console.error("❌ MongoDB Connection Failed:", err);
+    console.error("❌ MongoDB Connection Error:", err);
   }
 }
 connectDB();
 
-// Routes
-app.post("/api/contact", async (req, res) => {
+// 📌 Default route
+app.get("/", (req, res) => {
+  res.send("🚀 Backend API is running!");
+});
+
+// 📌 Save new contact
+app.post("/contacts", async (req, res) => {
   try {
     const { name, email, message } = req.body;
-    const result = await contacts.insertOne({ name, email, message, createdAt: new Date() });
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+    const result = await contactsCollection.insertOne({ name, email, message });
     res.status(201).json({ success: true, id: result.insertedId });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    console.error("❌ POST /contacts error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-app.get("/api/contact", async (req, res) => {
+// 📌 Get all contacts
+app.get("/contacts", async (req, res) => {
   try {
-    const data = await contacts.find().toArray();
-    res.json(data);
+    const contacts = await contactsCollection.find().toArray();
+    res.json(contacts);
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message });
+    console.error("❌ GET /contacts error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+// 🚀 Start server
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
