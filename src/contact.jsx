@@ -16,7 +16,7 @@ const Contact = () => {
   return (
     <section
       id="contact"
-      className="py-10 scroll-mt-10 bg-gray-900/70 rounded-lg relative"
+      className="py-15 scroll-mt-10 bg-gray-900/80 rounded-lg relative"
     >
       <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
         CONTACT ME

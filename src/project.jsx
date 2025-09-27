@@ -32,14 +32,15 @@ const Project = () => {
   }, [paused]);
 
   return (
-    <section 
-    id="projects"
-    className="py-10 px-4 sm:px-6 lg:px-12 m-3 bg-gray-900 rounded-lg scroll-mt-10">
+    <section
+      id="projects"
+      className="py-10 px-4 sm:px-6 lg:px-12 m-3 bg-gray-900 rounded-lg scroll-mt-10"
+    >
       <h2 className="text-3xl sm:text-4xl font-bold text-center mb-10 text-indigo-400">
         PROFESSIONAL EXPERIENCE
       </h2>
 
-      <div className="w-full max-w-full mx-auto bg-gray-800 p-8 sm:p-12 rounded-2xl shadow-xl hover:shadow-indigo-500/50 transition-shadow duration-500">
+      <div className="w-full max-w-full mx-auto bg-gray-800 p-6 sm:p-12 rounded-2xl shadow-xl hover:shadow-indigo-500/50 transition-shadow duration-500">
         <h3 className="text-2xl sm:text-3xl font-semibold mb-2 text-indigo-300">
           {projectdetails.title}
         </h3>
@@ -49,7 +50,7 @@ const Project = () => {
 
         {/* Image Carousel */}
         <div
-          className="relative w-full h-80 mb-6 overflow-hidden rounded-xl cursor-pointer group"
+          className="relative w-full aspect-[16/9] mb-6 overflow-hidden rounded-xl cursor-pointer group"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onClick={() => setModalOpen(true)}
@@ -63,11 +64,10 @@ const Project = () => {
                 key={i}
                 src={img}
                 alt={`Project-${i}`}
-                className="absolute w-full h-80 object-cover rounded-xl shadow-lg transition-all duration-700"
+                className="absolute w-full h-full object-cover rounded-xl shadow-lg transition-all duration-700"
                 style={{
-                  top: `${index * 10}px`,
                   zIndex: projectdetails.images.length - index,
-                  transform: `scale(${index === 0 ? 1 : 0.92})`,
+                  transform: `scale(${index === 0 ? 1 : 0.92}) translateY(${index * 10}px)`,
                   opacity: index === 0 ? 1 : 0.7,
                 }}
               />
@@ -75,9 +75,10 @@ const Project = () => {
           })}
         </div>
 
-        <p className="text-gray-300 text-sm sm:text-base line-clamp-6">
+        <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4 line-clamp-6">
           {projectdetails.description}
         </p>
+
         <button
           onClick={() => setModalOpen(true)}
           className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm sm:text-base font-medium"
@@ -94,7 +95,7 @@ const Project = () => {
             onClick={() => setModalOpen(false)}
           >
             <div
-              className="bg-gray-800 max-w-2xl w-full rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
+              className="bg-gray-800 w-full max-w-md sm:max-w-2xl rounded-lg p-4 sm:p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -110,6 +111,17 @@ const Project = () => {
               <p className="text-gray-400 text-sm sm:text-base mb-4">
                 {projectdetails.location}
               </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                {projectdetails.images.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    alt={`Project Modal-${i}`}
+                    className="w-full h-48 sm:h-60 object-cover rounded-lg"
+                  />
+                ))}
+              </div>
 
               <p className="text-gray-300 whitespace-pre-line text-sm sm:text-base leading-relaxed">
                 {projectdetails.description}
