@@ -1,93 +1,100 @@
 import React, { useState } from "react";
-import { createPortal } from "react-dom";
-import { CheckCircle } from "lucide-react";
 
 const Contact = () => {
-  const [showToast, setShowToast] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("");
+
+  // 🔑 Apna backend URL (live Vercel)
+  const API_URL = "https://portfolio-backend.vercel.app/api/contacts";
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formData = {
-      name: e.target[0].value,
-      email: e.target[1].value,
-      message: e.target[2].value,
-    };
+    setStatus("⏳ Sending...");
 
     try {
-          const res = await fetch("https://portfolio-backend.vercel.app/api/contacts", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData),
-          });
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // ✅ always send JSON
+      });
 
-      if (res.ok) {
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-        e.target.reset();
-      } else {
-        console.error("❌ Failed to send message");
+      if (!res.ok) {
+        throw new Error(`❌ Server error: ${res.status}`);
       }
-    } catch (err) {
-      console.error("❌ Error:", err);
+
+      const data = await res.json();
+      console.log("✅ Success:", data);
+
+      setStatus("✅ Message sent successfully!");
+      setFormData({ name: "", email: "", message: "" }); // reset form
+    } catch (error) {
+      console.error("❌ Error:", error);
+      setStatus("❌ Failed to send message. Please try again.");
     }
   };
 
   return (
-    <section
-      id="contact"
-      className="py-10 scroll-mt-10 bg-gray-900/80 rounded-lg relative"
-    >
-      <h2 className="text-3xl font-bold text-center mb-10 text-indigo-400">
+    <section id="contact" className="py-10 bg-gray-900 rounded-lg mx-3">
+      <h2 className="text-3xl font-bold text-center mb-6 text-indigo-400">
         Contact Me
       </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="max-w-lg w-full px-3 sm:px-0 mx-auto space-y-4"
+        className="max-w-lg mx-auto space-y-4 bg-gray-800 p-6 rounded-lg"
       >
         <input
           type="text"
           name="name"
           placeholder="Your Name"
+          value={formData.name}
+          onChange={handleChange}
           required
-          className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
         />
         <input
           type="email"
           name="email"
           placeholder="Your Email"
+          value={formData.email}
+          onChange={handleChange}
           required
-          className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
         />
         <textarea
           name="message"
           placeholder="Your Message"
+          rows="4"
+          value={formData.message}
+          onChange={handleChange}
           required
-          className="w-full p-3 rounded-md bg-gray-800 text-gray-100 border border-indigo-600 focus:border-indigo-400 focus:outline-none"
-          rows={4}
-        />
+          className="w-full p-3 rounded-lg bg-gray-700 text-white outline-none"
+        ></textarea>
+
         <button
           type="submit"
-          className="font-semibold font-sans w-full p-3 bg-indigo-600 rounded-lg hover:bg-indigo-700 text-white shadow-md cursor-pointer transition-colors duration-300"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold"
         >
           Send Message
         </button>
-      </form>
 
-      {/* Golden Toast using Portal */}
-      {showToast &&
-        createPortal(
-          <div
-            className={`fixed top-5 right-5 z-[9999] flex items-center bg-gray-300 text-gray-900 px-5 py-3 rounded-lg shadow-xl border
-                transform transition-all duration-700 ease-in-out pointer-events-none
-                ${showToast ? "translate-x-0 opacity-100" : "translate-x-12 opacity-0"}`}
-          >
-            <CheckCircle className="w-5 h-5 mr-2" />
-            <span>Message sent successfully!</span>
-          </div>,
-          document.body
+        {status && (
+          <p className="text-center text-sm text-gray-300 mt-3">{status}</p>
         )}
+      </form>
     </section>
   );
 };
