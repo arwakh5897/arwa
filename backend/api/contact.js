@@ -1,33 +1,45 @@
+// api/contacts.js
 import { MongoClient } from "mongodb";
 
-const uri = process.env.MONGO_URI; // ✅ environment variable use karo
-const client = new MongoClient(uri);
-let db, contactsCollection;
+const uri = process.env.MONGODB_URI;
+let client;
+let clientPromise;
 
-async function initDB() {
-  if (!db) {
-    await client.connect();
-    db = client.db("portfolioDB");
-    contactsCollection = db.collection("contacts");
-  }
+if (!global._mongoClientPromise) {
+  client = new MongoClient(uri);
+  global._mongoClientPromise = client.connect();
 }
+clientPromise = global._mongoClientPromise;
 
 export default async function handler(req, res) {
-  await initDB();
+  // ✅ CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "POST") {
-    const { name, email, message } = req.body;
-    if (!name || !email || !message) {
-      return res.status(400).json({ error: "All fields required" });
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  try {
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+    const collection = db.collection("contacts");
+
+    if (req.method === "POST") {
+      const { name, email, message } = req.body;
+      const result = await collection.insertOne({ name, email, message });
+      return res.status(201).json({ success: true, id: result.insertedId });
     }
-    const result = await contactsCollection.insertOne({ name, email, message });
-    return res.status(201).json({ success: true, id: result.insertedId });
-  }
 
-  if (req.method === "GET") {
-    const contacts = await contactsCollection.find().toArray();
-    return res.status(200).json(contacts);
-  }
+    if (req.method === "GET") {
+      const contacts = await collection.find().toArray();
+      return res.status(200).json(contacts);
+    }
 
-  res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "Method not allowed" });
+  } catch (error) {
+    console.error("❌ Error:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
 }

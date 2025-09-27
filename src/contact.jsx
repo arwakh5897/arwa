@@ -15,12 +15,11 @@ const Contact = () => {
     };
 
     try {
-          const res = await fetch("https://your-vercel-project.vercel.app/api/contacts", {
+          const res = await fetch("https://portfolio-backend.vercel.app/api/contacts", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData),
           });
-
 
       if (res.ok) {
         setShowToast(true);
