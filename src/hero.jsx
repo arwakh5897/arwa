@@ -47,14 +47,16 @@ const Hero = () => {
         </h1>
 
         {/* 🔄 Rotating text */}
-     <p className="mt-4 text-xl sm:text-2xl text-gray-300 font-medium">
-  Specializing in{" "}
+      {/* Mobile: stacked, Desktop: inline */}
+<p className="mt-4 text-xl sm:text-2xl text-gray-300 font-medium text-center">
+  <span className="block sm:inline">Specializing in</span>{" "}
   <span
-    className={`${colors[colorIndex]} font-semibold transition-colors duration-700 inline-block whitespace-nowrap`}
+    className={`${colors[colorIndex]} font-semibold transition-colors duration-700 inline-block`}
   >
     {titles[titleIndex]}
   </span>
 </p>
+
 
 
 
