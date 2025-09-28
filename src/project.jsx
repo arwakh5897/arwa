@@ -117,7 +117,7 @@ const Project = () => {
             onClick={() => setModalOpen(false)}
           >
             <div
-              className="bg-gray-800 w-full max-w-md sm:max-w-2xl rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-auto"
+              className="bg-gray-800 w-full max-w-md sm:max-w-2xl rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-[90vh]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
