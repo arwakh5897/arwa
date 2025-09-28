@@ -3,8 +3,8 @@ import "./index.css";
 import Hero from "./hero";
 import Project from "./project";
 import Contact from "./contact";
-import WAVES from "vanta/dist/vanta.waves.min";
-import * as THREE from "three";
+// import WAVES from "vanta/dist/vanta.waves.min";
+// import * as THREE from "three";
 import Footer from "./footer";
 import Header from "./header";
 import Skills from "./skills";
@@ -16,35 +16,35 @@ const App = () => {
   const vantaRef = useRef(null);
 
 
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(
-        WAVES({
-          el: vantaRef.current,
-          THREE: THREE,
-          mouseControls: true,
-          touchControls: true,
-          minHeight: 200.0,
-          minWidth: 200.0,
-          scale: 1.0,
-          scaleMobile: 1.0,
-          shininess: 150.0,
-          waveHeight: 10.5,
-          waveSpeed: 0.5,
-          zoom: 0.85,
-          color: 0x111827,
-          backgroundColor: 0x2e2e2e,
-        })
-      );
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [vantaEffect]);
+  // useEffect(() => {
+  //   if (!vantaEffect) {
+  //     setVantaEffect(
+  //       WAVES({
+  //         el: vantaRef.current,
+  //         THREE: THREE,
+  //         mouseControls: true,
+  //         touchControls: true,
+  //         minHeight: 200.0,
+  //         minWidth: 200.0,
+  //         scale: 1.0,
+  //         scaleMobile: 1.0,
+  //         shininess: 150.0,
+  //         waveHeight: 10.5,
+  //         waveSpeed: 0.5,
+  //         zoom: 0.85,
+  //         color: 0x111827,
+  //         backgroundColor: 0x2e2e2e,
+  //       })
+  //     );
+  //   }
+  //   return () => {
+  //     if (vantaEffect) vantaEffect.destroy();
+  //   };
+  // }, [vantaEffect]);
 
   return (
     <div 
-      ref={vantaRef}
+      // ref={vantaRef}
       className="text-white  min-h-screen"
     >
       {/* Navbar */}

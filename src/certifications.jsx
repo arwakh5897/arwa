@@ -44,7 +44,8 @@ const Certificates = () => {
               <div
                 className={`bg-gray-800 p-4 sm:p-6 rounded-xl shadow-md flex flex-col items-center justify-center transition-transform duration-500
                   ${isActive ? "scale-105 shadow-indigo-500/70 border-2 border-indigo-400" : "scale-95 opacity-80"}
-                  hover:scale-105 hover:shadow-indigo-400/50`}
+                   hover:shadow-indigo-400/50 
+                  h-64`}
               >
                 <div className="h-28 w-28 sm:h-36 sm:w-36 mb-3 sm:mb-4 flex items-center justify-center bg-white rounded-full overflow-hidden shadow-inner">
                   <img

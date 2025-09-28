@@ -65,7 +65,7 @@ const Skills = () => {
         {skills.map((skill, index) => (
           <div
             key={index}
-            className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-indigo-500/50 transition-shadow duration-500"
+            className="hover:scale-105 bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-indigo-500/50 transition-shadow duration-500"
           >
             <h3 className="text-lg font-semibold mb-2 text-indigo-300">
               {skill.name}
@@ -84,7 +84,7 @@ const Skills = () => {
             </p>
             <button
               onClick={() => setActiveSkill(skill)}
-              className="text-indigo-400 hover:text-indigo-300 mt-2 text-sm"
+              className="text-indigo-400 hover:text-indigo-300 mt-2 text-sm cursor-pointer "
             >
               Read More
             </button>
@@ -106,7 +106,7 @@ const Skills = () => {
                 onClick={() => setActiveSkill(null)}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5 cursor-pointer" />
               </button>
 
               <h3 className="text-xl font-semibold text-indigo-300 mb-3">

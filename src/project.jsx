@@ -11,9 +11,20 @@ const projectdetails = {
     "https://images.pexels.com/photos/3184290/pexels-photo-3184290.jpeg?auto=compress&cs=tinysrgb&w=800",
     "https://images.pexels.com/photos/4386394/pexels-photo-4386394.jpeg?auto=compress&cs=tinysrgb&w=800",
   ],
-  description: `• Customer Service: Assisted customers with basic banking services, including opening and closing accounts, processing transactions, and answering general inquiries, contributing to a positive customer experience.
-• Data Analysis: Collected and analyzed customer data to identify trends in account usage, helping the bank improve service offerings and target key customer segments.
-• Loan Documentation: Assisted in the preparation and processing of loan documentation, ensuring accuracy and compliance with regulatory requirements.`,
+  description: [
+    {
+      heading: "Customer Service",
+      text: "Provided exceptional support to customers by assisting with a wide range of banking services, including opening and closing accounts, processing deposits, withdrawals, and transfers, and resolving account-related issues. Responded promptly to inquiries, delivered personalized guidance, and ensured a smooth and positive customer experience."
+    },
+    {
+      heading: "Data Analysis",
+      text: "Collected, organized, and analyzed customer data to identify patterns and trends in account usage, spending behavior, and product engagement. Generated detailed reports and actionable insights that helped the bank optimize service offerings, target key customer segments, and improve overall customer satisfaction."
+    },
+    {
+      heading: "Loan Documentation",
+      text: "Assisted in the preparation, verification, and processing of loan applications and related documentation, ensuring accuracy, completeness, and compliance with regulatory and internal standards. Coordinated with internal teams and clients to streamline approval processes and maintain high levels of operational efficiency."
+    }
+  ]
 };
 
 const Project = () => {
@@ -40,21 +51,21 @@ const Project = () => {
         PROFESSIONAL EXPERIENCE
       </h2>
 
-      <div className="w-full max-w-full mx-auto bg-gray-800 p-6 sm:p-12 rounded-2xl shadow-xl hover:shadow-indigo-500/50 transition-shadow duration-500">
-        <h3 className="text-2xl sm:text-3xl font-semibold mb-2 text-indigo-300">
+      {/* Card */}
+      <div className="w-full max-w-sm md:max-w-md lg:max-w-3xl mx-auto bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md hover:shadow-indigo-500/30 transition-shadow duration-300">
+        <h3 className="text-lg sm:text-xl font-semibold mb-1 text-indigo-300">
           {projectdetails.title}
         </h3>
-        <p className="text-gray-400 text-sm sm:text-base mb-6">
+        <p className="text-gray-400 text-xs sm:text-sm mb-2">
           {projectdetails.location}
         </p>
 
-        {/* Image Carousel */}
+        {/* Compact Image Carousel */}
         <div
-          className="relative w-full aspect-[16/9] mb-6 overflow-hidden rounded-xl cursor-pointer group"
+          className="relative w-full h-40 mb-3 sm:h-48 overflow-hidden rounded-md group"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          onClick={() => setModalOpen(true)}
-        >
+                >
           {projectdetails.images.map((img, i) => {
             const index =
               (i - currentIndex + projectdetails.images.length) %
@@ -64,10 +75,10 @@ const Project = () => {
                 key={i}
                 src={img}
                 alt={`Project-${i}`}
-                className="absolute w-full h-full object-cover rounded-xl shadow-lg transition-all duration-700"
+                className="absolute w-full h-full object-cover rounded-md transition-all duration-700"
                 style={{
                   zIndex: projectdetails.images.length - index,
-                  transform: `scale(${index === 0 ? 1 : 0.92}) translateY(${index * 10}px)`,
+                  transform: `scale(${index === 0 ? 1 : 0.95}) translateY(${index * 5}px)`,
                   opacity: index === 0 ? 1 : 0.7,
                 }}
               />
@@ -75,13 +86,24 @@ const Project = () => {
           })}
         </div>
 
-        <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4 line-clamp-6">
-          {projectdetails.description}
-        </p>
+        {/* Truncated Description */}
+        <div className="text-gray-300 text-xs sm:text-sm leading-relaxed mb-2">
+          {projectdetails.description.map((item, i) => {
+            if (i === 0) {
+              return (
+                <p key={i}>
+                  <strong>{item.heading}:</strong>{" "}
+                  {item.text.slice(0, 200)}...
+                </p>
+              );
+            }
+            return null;
+          })}
+        </div>
 
         <button
           onClick={() => setModalOpen(true)}
-          className="mt-4 text-indigo-400 hover:text-indigo-300 text-sm sm:text-base font-medium"
+          className="text-indigo-400 hover:text-indigo-300 cursor-pointer text-xs sm:text-sm font-medium"
         >
           Read More
         </button>
@@ -95,14 +117,14 @@ const Project = () => {
             onClick={() => setModalOpen(false)}
           >
             <div
-              className="bg-gray-800 w-full max-w-md sm:max-w-2xl rounded-lg p-4 sm:p-6 relative shadow-lg overflow-y-auto max-h-[80vh]"
+              className="bg-gray-800 w-full max-w-md sm:max-w-2xl rounded-lg p-6 relative shadow-lg overflow-y-auto max-h-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setModalOpen(false)}
                 className="absolute top-3 right-3 text-gray-400 hover:text-white"
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 cursor-pointer" />
               </button>
 
               <h3 className="text-2xl font-semibold text-indigo-300 mb-4">
@@ -112,20 +134,14 @@ const Project = () => {
                 {projectdetails.location}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                {projectdetails.images.map((img, i) => (
-                  <img
-                    key={i}
-                    src={img}
-                    alt={`Project Modal-${i}`}
-                    className="w-full h-48 sm:h-60 object-cover rounded-lg"
-                  />
+              {/* Full Description with bold headings */}
+              <div className="text-gray-300 text-sm sm:text-base leading-relaxed space-y-3">
+                {projectdetails.description.map((item, i) => (
+                  <p key={i}>
+                    <strong>{item.heading}:</strong> {item.text}
+                  </p>
                 ))}
               </div>
-
-              <p className="text-gray-300 whitespace-pre-line text-sm sm:text-base leading-relaxed">
-                {projectdetails.description}
-              </p>
             </div>
           </div>,
           document.body

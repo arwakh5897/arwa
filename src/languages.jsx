@@ -10,7 +10,7 @@ const languages = [
 const Languages = () => (
   <section
     id="languages"
- className="py-10 px-6 bg-gray-900/70 rounded-lg scroll-mt-10"  >
+    className="py-10 px-6 bg-gray-900/70 rounded-lg scroll-mt-10 my-5"  >
     <h2 className="text-base sm:text-lg md:text-3xl font-bold text-center mb-6 text-indigo-400">
       LANGUAGES
     </h2>
